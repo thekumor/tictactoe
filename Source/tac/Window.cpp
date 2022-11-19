@@ -7,6 +7,14 @@ namespace tac {
 	{
 	}
 
+	bool Window::IsHovered(Button& btn)
+	{
+		sf::Vector2i mousePos = sf::Mouse::getPosition(m_Window);
+
+		return (mousePos.x >= btn.GetPosition().x && mousePos.y >= btn.GetPosition().y
+			&& mousePos.x <= btn.GetOBBs().x && mousePos.y <= btn.GetOBBs().y);
+	}
+
 	void Window::ProcessEvents()
 	{
 		sf::Event ev;

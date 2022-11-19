@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.0888418"
-     inkscape:cx="195.56292"
-     inkscape:cy="121.11975"
+     inkscape:zoom="2.9540684"
+     inkscape:cx="142.00754"
+     inkscape:cy="103.58596"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="1912"
@@ -40,25 +40,25 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#00ff00;fill-opacity:0;stroke:#000000;stroke-width:0.457493;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#ffc72b;fill-opacity:1;stroke:#000000;stroke-width:0.457493;stroke-dasharray:none;stroke-opacity:1"
        id="rect184"
        width="63.404217"
        height="12.104856"
        x="15.417303"
        y="20.103912"
-       inkscape:export-filename="play.png"
+       inkscape:export-filename="exit.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <text
        xml:space="preserve"
-       style="font-size:11.2889px;font-family:Cambria;-inkscape-font-specification:Cambria;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
-       x="36.552605"
-       y="28.893127"
+       style="font-size:11.2889px;font-family:Cambria;-inkscape-font-specification:Cambria;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       x="37.296745"
+       y="29.87429"
        id="text1005"><tspan
          sodipodi:role="line"
          id="tspan1003"
-         style="stroke-width:0.264583;stroke-dasharray:none"
-         x="36.552605"
-         y="28.893127">Play</tspan></text>
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.264583;stroke-dasharray:none"
+         x="37.296745"
+         y="29.87429">Exit</tspan></text>
   </g>
 </svg>

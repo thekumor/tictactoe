@@ -13,9 +13,38 @@ namespace tac {
 		m_Sprite.SetPosition(position);
 	}
 
+	void Button::SetColor(const sf::Color& color)
+	{
+		m_Color = color;
+		m_Sprite.SetColor(color);
+	}
+
+	void Button::SetCallback(std::function<void()> func)
+	{
+		m_Callback = func;
+	}
+
+	void Button::Callback()
+	{
+		if (m_Callback)
+		{
+			m_Callback();
+		}
+	}
+
 	sf::Vector2f Button::GetPosition()
 	{
 		return m_Position;
+	}
+
+	sf::Vector2u Button::GetSize()
+	{
+		return m_Sprite.GetSize();
+	}
+
+	sf::Vector2f Button::GetOBBs()
+	{
+		return m_Position + sf::Vector2f(GetSize().x, GetSize().y);
 	}
 
 	void Button::Draw(sf::RenderTarget& target)

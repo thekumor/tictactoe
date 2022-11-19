@@ -13,6 +13,7 @@ namespace tac {
 		Texture(const std::string& path);
 		Texture() = default;
 
+		sf::Vector2u GetSize();
 		bool Load(const std::string& path);
 
 	private:

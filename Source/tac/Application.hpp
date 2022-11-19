@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Window.hpp"
+#include "Scenes.hpp"
+#include "ObjectCreator.hpp"
 #include "Button.hpp"
 #include <SFMl/Graphics.hpp>
 #include <string>
+#include <functional>
 
 namespace tac {
 
@@ -17,6 +20,7 @@ namespace tac {
 
 	private:
 		Window m_Window;
+		ObjectCreator m_Creator;
 	};
 
 }

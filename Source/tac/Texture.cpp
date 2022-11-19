@@ -8,6 +8,11 @@ namespace tac {
 		Load(path);
 	}
 
+	sf::Vector2u Texture::GetSize()
+	{
+		return m_Texture.getSize();
+	}
+
 	bool Texture::Load(const std::string& path)
 	{
 		m_Path = path;
@@ -15,10 +20,10 @@ namespace tac {
 		if (!m_Texture.loadFromFile(path))
 		{
 			// Nothing, maybe an error in the future
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 }

@@ -9,6 +9,16 @@ namespace tac {
 		SetTexture(texture);
 	}
 
+	sf::Vector2f Sprite::GetPosition()
+	{
+		return m_Position;
+	}
+
+	sf::Vector2u Sprite::GetSize()
+	{
+		return m_Texture->GetSize();
+	}
+
 	void Sprite::SetPosition(const sf::Vector2f& position)
 	{
 		m_Position = position;
@@ -24,6 +34,12 @@ namespace tac {
 	void Sprite::Draw(sf::RenderTarget& target)
 	{
 		target.draw(m_Sprite);
+	}
+
+	void Sprite::SetColor(const sf::Color& color)
+	{
+		m_Color = color;
+		m_Sprite.setColor(color);
 	}
 
 }

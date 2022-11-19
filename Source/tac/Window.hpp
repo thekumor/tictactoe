@@ -24,9 +24,10 @@ namespace tac {
 
 		inline void Clear(const sf::Color& color = {0u, 0u, 0u, 255u})
 		{
-			m_Window.clear();
+			m_Window.clear(color);
 		}
 
+		bool IsHovered(Button& btn);
 		void ProcessEvents();
 		void Close();
 		void Draw(Button& btn);

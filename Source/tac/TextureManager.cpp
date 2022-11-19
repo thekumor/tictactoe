@@ -6,6 +6,7 @@ namespace tac {
     {
         if (m_Textures.find(title) == m_Textures.end())
         {
+            m_Textures[title] = std::make_shared<Texture>();
             auto& texture = m_Textures[title];
             if (!texture->Load(title))
             {
