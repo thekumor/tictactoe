@@ -162,7 +162,6 @@
     <ClCompile Include="Source\tac\Application.cpp" />
     <ClCompile Include="Source\tac\Button.cpp" />
     <ClCompile Include="Source\tac\ObjectCreator.cpp" />
-    <ClCompile Include="Source\tac\Scenes.cpp" />
     <ClCompile Include="Source\tac\Sprite.cpp" />
     <ClCompile Include="Source\tac\TextureManager.cpp" />
     <ClCompile Include="Source\tac\tictactoe.cpp" />
@@ -173,7 +172,6 @@
     <ClInclude Include="Source\tac\Application.hpp" />
     <ClInclude Include="Source\tac\Button.hpp" />
     <ClInclude Include="Source\tac\ObjectCreator.hpp" />
-    <ClInclude Include="Source\tac\Scenes.hpp" />
     <ClInclude Include="Source\tac\Sprite.hpp" />
     <ClInclude Include="Source\tac\TextureManager.hpp" />
     <ClInclude Include="Source\tac\Window.hpp" />

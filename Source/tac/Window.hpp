@@ -31,6 +31,7 @@ namespace tac {
 		void ProcessEvents();
 		void Close();
 		void Draw(Button& btn);
+		void Draw(Sprite& spr);
 
 	private:
 		sf::RenderWindow m_Window;

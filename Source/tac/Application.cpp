@@ -1,5 +1,7 @@
 #include "Application.hpp"
 
+#define BUTTON_DELAY 0.25f
+
 namespace tac {
 
 	Application::Application(const sf::Vector2u& size, const std::string& title)
@@ -8,57 +10,145 @@ namespace tac {
 
 	}
 
+	static sf::Clock clock;
+	static sf::Time deltaButton;
+	static struct Scene
+	{
+		void Create() 
+		{
+			if (OnCreate)
+			{
+				OnCreate();
+			}
+		}
+
+		void Destroy()
+		{
+			Creator.Purge();
+		}
+
+		void Logic(Window& window)
+		{
+			for (auto& k : Creator.GetButtons())
+			{
+				if (window.IsHovered(*k))
+				{
+					k->SetColor(sf::Color::Cyan);
+
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					{
+						if (deltaButton.asSeconds() + BUTTON_DELAY > clock.getElapsedTime().asSeconds())
+						{
+							return;
+						}
+
+						deltaButton = clock.getElapsedTime();
+
+						k->Callback();
+						return;
+					}
+				}
+				else
+				{
+					k->SetColor(sf::Color::White);
+				}
+			}
+		}
+
+		void Draw(Window& window)
+		{
+			for (auto& k : Creator.GetSprites())
+			{
+				window.Draw(*k);
+			}
+
+			for (auto& k : Creator.GetButtons())
+			{
+				window.Draw(*k);
+			}
+		}
+
+		ObjectCreator Creator;
+		std::function<void()> OnCreate = nullptr;
+	};
+
 	void Application::Run()
 	{
-		SceneManager sceneManager;
-		//sceneManager.Scenes.reserve(3);
-		for (uint64_t i = 0; i < 3; i++) sceneManager.Scenes.emplace_back(std::make_shared<Scene>());
-		std::shared_ptr<Scene> mainMenu = sceneManager.Scenes[0], pickMenu = sceneManager.Scenes[1], game = sceneManager.Scenes[2];
+		Scene mainMenu;
+		Scene pickMenu;
+		Scene game;
+		Scene* curScene = &mainMenu;
 
-		std::shared_ptr<Scene> curScene = mainMenu;
-		mainMenu->OnCreate = [&]()
+		game.OnCreate = [&]()
 		{
-			auto& play = mainMenu->Creator.CreateButton(sf::Vector2f(200, 130), "images/buttons/play.png", [&]()
-													   {
-														   mainMenu->Destroy();
-														   pickMenu->Create();
-														   curScene = pickMenu;
-													   });
-			auto& exit = mainMenu->Creator.CreateButton(sf::Vector2f(200, 200), "images/buttons/exit.png", [&]()
-													   {
-														   m_Window.Close();
-													   });
+			auto field = game.Creator.CreateSprite(sf::Vector2f(136, 50), "images/field.png");
+			field->SetScale(0.08f);
+
+			game.Creator.CreateButton(sf::Vector2f(200, 400), "images/buttons/back.png", [&]()
+									  {
+										  mainMenu.Create();
+										  curScene = &mainMenu;
+										  game.Destroy();
+									  });
 		};
 
-		pickMenu->OnCreate = [&]()
+		pickMenu.OnCreate = [&]()
 		{
-			auto& cross = pickMenu->Creator.CreateButton(sf::Vector2f(200, 130), "images/buttons/cross.png", [&]()
-														{
+			pickMenu.Creator.CreateButton(sf::Vector2f(200, 140), "images/buttons/cross.png", [&]()
+										  {
+											  game.Create();
+											  curScene = &game;
+											  pickMenu.Destroy();
+										  });
 
-														});
-			auto& heart = pickMenu->Creator.CreateButton(sf::Vector2f(200, 200), "images/buttons/heart.png", [&]()
-														{
+			pickMenu.Creator.CreateButton(sf::Vector2f(200, 200), "images/buttons/heart.png", [&]()
+										  {
+											  game.Create();
+											  curScene = &game;
+											  pickMenu.Destroy();
+										  });
 
-														});
-			auto& back = pickMenu->Creator.CreateButton(sf::Vector2f(200, 270), "images/buttons/back.png", [&]()
-													   {
-														   pickMenu->Destroy();
-														   mainMenu->Create();
-														   curScene = mainMenu;
-													   });
+			pickMenu.Creator.CreateButton(sf::Vector2f(200, 260), "images/buttons/back.png", [&]()
+										  {
+											  mainMenu.Create();
+											  curScene = &mainMenu;
+											  pickMenu.Destroy();
+										  });
 		};
 
-		mainMenu->Create();
+		mainMenu.OnCreate = [&]()
+		{
+			mainMenu.Creator.CreateButton(sf::Vector2f(200, 140), "images/buttons/play.png", [&]()
+										  {
+											  pickMenu.Create();
+											  curScene = &pickMenu;
+											  mainMenu.Destroy();
+										  });
+
+			mainMenu.Creator.CreateButton(sf::Vector2f(200, 200), "images/buttons/exit.png", [&]()
+										  {
+											  m_Window.Close();
+										  });
+		};
+
+		mainMenu.Create();
 
 		while (m_Window.IsOpen())
 		{
+			// ------------------------------------------
 			// Logic
 			m_Window.ProcessEvents();
-			curScene->Logic(m_Window);
 
+			if (curScene)
+				curScene->Logic(m_Window);
+
+			// ------------------------------------------
 			// Graphics
 			m_Window.Clear(sf::Color(240, 185, 185));
-			curScene->Draw(m_Window);
+
+			if (curScene)
+				curScene->Draw(m_Window);
+
 			m_Window.Display();
 		}
 	}

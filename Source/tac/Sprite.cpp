@@ -19,6 +19,12 @@ namespace tac {
 		return m_Texture->GetSize();
 	}
 
+	void Sprite::SetScale(float size)
+	{
+		m_Scale = size;
+		m_Sprite.setScale(size, size);
+	}
+
 	void Sprite::SetPosition(const sf::Vector2f& position)
 	{
 		m_Position = position;

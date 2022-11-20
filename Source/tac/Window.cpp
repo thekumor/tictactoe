@@ -3,7 +3,7 @@
 namespace tac {
 	
 	Window::Window(const sf::Vector2u& size, const std::string& title)
-		: m_Size(size), m_Title(title), m_Window(sf::VideoMode(size.x, size.y), title)
+		: m_Size(size), m_Title(title), m_Window(sf::VideoMode(size.x, size.y), title, sf::Style::Close | sf::Style::Titlebar)
 	{
 	}
 
@@ -38,6 +38,11 @@ namespace tac {
 	void Window::Draw(Button& btn)
 	{
 		btn.Draw(m_Window);
+	}
+
+	void Window::Draw(Sprite& spr)
+	{
+		spr.Draw(m_Window);
 	}
 
 }

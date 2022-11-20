@@ -2,17 +2,17 @@
 
 namespace tac {
 
-	const std::list<std::shared_ptr<Button>>& ObjectCreator::GetButtons()
+	const std::vector<std::shared_ptr<Button>>& ObjectCreator::GetButtons()
 	{
 		return m_Buttons;
 	}
 
-	const std::list<std::shared_ptr<Sprite>>& ObjectCreator::GetSprites()
+	const std::vector<std::shared_ptr<Sprite>>& ObjectCreator::GetSprites()
 	{
 		return m_Sprites;
 	}
 
-	std::shared_ptr<Button>& ObjectCreator::CreateButton(const sf::Vector2f& position, const std::string& texturePath, std::function<void()> onClick)
+	std::shared_ptr<Button> ObjectCreator::CreateButton(const sf::Vector2f& position, const std::string& texturePath, std::function<void()> onClick)
     {
         std::shared_ptr<Texture> texture = m_Manager.GetTexture(texturePath);
         std::shared_ptr<Button> newButton = std::make_shared<Button>(position, texture);
@@ -21,7 +21,7 @@ namespace tac {
         return m_Buttons.emplace_back(newButton);
     }
 
-	std::shared_ptr<Sprite>& ObjectCreator::CreateSprite(const sf::Vector2f& position, const std::string& texturePath)
+	std::shared_ptr<Sprite> ObjectCreator::CreateSprite(const sf::Vector2f& position, const std::string& texturePath)
 	{
 		std::shared_ptr<Texture> texture = m_Manager.GetTexture(texturePath);
 		std::shared_ptr<Sprite> newSprite = std::make_shared<Sprite>(position, texture);

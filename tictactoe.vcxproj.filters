@@ -39,9 +39,6 @@
     <ClCompile Include="Source\tac\ObjectCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\tac\Scenes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\tac\Application.hpp">
@@ -63,9 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\tac\ObjectCreator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\tac\Scenes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

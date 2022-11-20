@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Window.hpp"
-#include "Scenes.hpp"
 #include "ObjectCreator.hpp"
 #include "Button.hpp"
 #include <SFMl/Graphics.hpp>
