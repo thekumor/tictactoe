@@ -14,6 +14,7 @@ namespace tac {
 
 		sf::Vector2f GetPosition();
 		sf::Vector2u GetSize();
+		float GetScale();
 		void SetScale(float size);
 		void SetPosition(const sf::Vector2f& position);
 		void SetTexture(std::shared_ptr<Texture> texture);

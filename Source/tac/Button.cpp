@@ -32,6 +32,11 @@ namespace tac {
 		}
 	}
 
+	void Button::SetVisible(bool visible)
+	{
+		m_Visible = visible;
+	}
+
 	sf::Vector2f Button::GetPosition()
 	{
 		return m_Position;
@@ -44,12 +49,29 @@ namespace tac {
 
 	sf::Vector2f Button::GetOBBs()
 	{
-		return m_Position + sf::Vector2f(GetSize().x, GetSize().y);
+		return m_Position + sf::Vector2f(GetSize().x * GetScale(), GetSize().y * GetScale());
+	}
+
+	bool Button::IsVisible()
+	{
+		return m_Visible;
+	}
+
+	float Button::GetScale()
+	{
+		return m_Scale;
+	}
+
+	void Button::SetScale(float scale)
+	{
+		m_Scale = scale;
+		m_Sprite.SetScale(scale);
 	}
 
 	void Button::Draw(sf::RenderTarget& target)
 	{
-		m_Sprite.Draw(target);
+		if (m_Visible)
+			m_Sprite.Draw(target);
 	}
 
 	void Button::SetTexture(std::shared_ptr<Texture> texture)

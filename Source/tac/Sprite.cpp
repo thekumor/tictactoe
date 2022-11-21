@@ -19,6 +19,11 @@ namespace tac {
 		return m_Texture->GetSize();
 	}
 
+	float Sprite::GetScale()
+	{
+		return m_Scale;
+	}
+
 	void Sprite::SetScale(float size)
 	{
 		m_Scale = size;
