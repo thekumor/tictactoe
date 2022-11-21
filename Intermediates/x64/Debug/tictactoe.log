@@ -1,0 +1,55 @@
+﻿  Application.cpp
+C:\Dev\tictactoe\Source\tac\Application.cpp(92,3): warning C4091: 'static ': ignored on left of 'tac::Scene' when no variable is declared
+C:\Dev\tictactoe\Source\tac\Application.cpp(124,118): warning C4244: 'argument': conversion from 'uint64_t' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(124,109): warning C4244: 'argument': conversion from 'uint64_t' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(130,109): warning C4244: 'argument': conversion from 'uint64_t' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(130,100): warning C4244: 'argument': conversion from 'uint64_t' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(159,110): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(159,101): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\utility(190,16): warning C4244: 'initializing': conversion from 'uint64_t' to '_Ty1', possible loss of data
+          with
+          [
+              _Ty1=uint8_t
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(363): message : see reference to function template instantiation 'std::pair<uint8_t,uint8_t>::pair<uint64_t&,uint64_t&,0>(_Other1,_Other2) noexcept' being compiled
+          with
+          [
+              _Other1=uint64_t &,
+              _Other2=uint64_t &
+          ]
+C:\Dev\tictactoe\Source\tac\Application.cpp(363): message : see reference to function template instantiation 'std::pair<uint8_t,uint8_t>::pair<uint64_t&,uint64_t&,0>(_Other1,_Other2) noexcept' being compiled
+          with
+          [
+              _Other1=uint64_t &,
+              _Other2=uint64_t &
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\utility(190,54): warning C4244: 'initializing': conversion from 'uint64_t' to '_Ty2', possible loss of data
+          with
+          [
+              _Ty2=uint8_t
+          ]
+  tictactoe.vcxproj -> C:\Dev\tictactoe\Binaries\x64\Debug\tictactoe.exe
