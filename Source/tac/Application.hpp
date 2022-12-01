@@ -40,6 +40,7 @@ namespace tac {
 		Application() = default;
 
 		void Run();
+		bool NoEmptyFields();
 		Field Evaluate(Field fields[3][3]);
 
 	private:

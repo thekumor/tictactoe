@@ -2,7 +2,8 @@
 
 #define BUTTON_DELAY 0.25f
 
-namespace tac {
+namespace tac
+{
 
 	Application::Application(const sf::Vector2u& size, const std::string& title)
 		: m_Window(size, title)
@@ -37,6 +38,8 @@ namespace tac {
 
 			for (auto& k : Creator.GetButtons())
 			{
+				if (k->IsGhost()) continue;
+
 				if (window.IsHovered(*k))
 				{
 					anyHovered = true;
@@ -97,6 +100,9 @@ namespace tac {
 
 		game.OnCreate = [&]()
 		{
+			game.Destroy();
+			AI ai;
+
 			m_FieldsBlocked = false;
 			for (uint64_t x = 0; x < 3; x++)
 				for (uint64_t y = 0; y < 3; y++)
@@ -105,39 +111,79 @@ namespace tac {
 			auto area = game.Creator.CreateSprite(sf::Vector2f(136, 50), "images/field.png");
 			area->SetScale(0.08f);
 
-			game.Creator.CreateButton(sf::Vector2f(200, 400), "images/buttons/back.png", [&]()
-									  {
-										  mainMenu.Create();
-										  curScene = &mainMenu;
-										  game.Destroy();
-									  });
+			auto back = game.Creator.CreateButton(sf::Vector2f(200, 400), "images/buttons/back.png", [&]()
+				{
+					mainMenu.Create();
+					curScene = &mainMenu;
+					game.Destroy();
+				});
+
+			auto play = game.Creator.CreateButton(sf::Vector2f(320, 400), "images/buttons/play.png", [&]()
+				{
+					game.Create();
+				});
+
+			play->SetGhost(true);
 
 			for (uint64_t x = 0; x < 3; x++)
 			{
 				for (uint64_t y = 0; y < 3; y++)
 				{
 					const sf::Vector2f position = area->GetPosition() + sf::Vector2f(124 * x, 112 * y);
-					const std::shared_ptr<Button> field = game.Creator.CreateButton(position, "images/heart.png", [position, &game, this, x, y]()
-																					{
-																						if (!m_FieldsBlocked && m_Fields[x][y] == Field::Empty)
-																						{
-																							bool isCross = s_Choice == Field::Cross;
-																							const std::string path = isCross ? "images/cross.png" : "images/heart.png";
-																							auto tic = game.Creator.CreateSprite(position, path);
-																							tic->SetScale(isCross ? 0.14f : 0.11f);
+					const std::shared_ptr<Button> field = game.Creator.CreateButton(position, "images/heart.png", [back, play, area, position, &game, this, x, y, &ai]()
+						{
+							if (!m_FieldsBlocked && m_Fields[x][y] == Field::Empty)
+							{
+								bool isCross = s_Choice == Field::Cross;
+								const std::string path = isCross ? "images/cross.png" : "images/heart.png";
+								auto tic = game.Creator.CreateSprite(position, path);
+								tic->SetScale(isCross ? 0.14f : 0.11f);
 
-																							m_Fields[x][y] = isCross ? Field::Cross : Field::Heart;
+								m_Fields[x][y] = s_Choice;
 
-																							Field winner = Evaluate(m_Fields);
+								Field winner = Evaluate(m_Fields);
 
-																							if (winner != Field::Invalid)
-																							{
-																								m_FieldsBlocked = true;
-																								auto result = game.Creator.CreateSprite(sf::Vector2f(10, 10),
-																																		winner == s_Choice ? "images/win.png" : "images/lose.png");
-																							}
-																						}
-																					});
+								if (winner != Field::Invalid)
+								{
+									m_FieldsBlocked = true;
+									back->SetPosition(back->GetPosition() - sf::Vector2f(130, 0));
+									auto result = game.Creator.CreateSprite(sf::Vector2f(10, 10), "images/win.png");
+									play->SetGhost(false);
+								}
+
+								// Draw, no winner.
+								bool isEmpty = NoEmptyFields();
+								if (isEmpty)
+								{
+									m_FieldsBlocked = true;
+									back->SetPosition(back->GetPosition() - sf::Vector2f(130, 0));
+									play->SetGhost(false);
+									return;
+								}
+
+								std::pair<uint8_t, uint8_t> aiMove = ai.GetMove(*this, m_Fields);
+								uint8_t aiX = aiMove.first;
+								uint8_t aiY = aiMove.second;
+
+								sf::Vector2f aiPosition = area->GetPosition() + sf::Vector2f(124 * aiX, 112 * aiY);
+
+								const std::string aiPath = isCross ? "images/heart.png" : "images/cross.png";
+								auto tac = game.Creator.CreateSprite(aiPosition, aiPath);
+								tac->SetScale(isCross ? 0.11f : 0.14f);
+
+								m_Fields[aiX][aiY] = isCross ? Field::Heart : Field::Cross;
+
+								winner = Evaluate(m_Fields);
+
+								if (winner != Field::Invalid)
+								{
+									m_FieldsBlocked = true;
+									back->SetPosition(back->GetPosition() - sf::Vector2f(130, 0));
+									auto result = game.Creator.CreateSprite(sf::Vector2f(10, 10), "images/lose.png");
+									play->SetGhost(false);
+								}
+							}
+						});
 					field->SetScale(0.11f);
 					field->SetVisible(false);
 				}
@@ -147,42 +193,42 @@ namespace tac {
 		pickMenu.OnCreate = [&]()
 		{
 			pickMenu.Creator.CreateButton(sf::Vector2f(200, 140), "images/buttons/cross.png", [&]()
-										  {
-											  s_Choice = Field::Cross;
-											  game.Create();
-											  curScene = &game;
-											  pickMenu.Destroy();
-										  });
+				{
+					s_Choice = Field::Cross;
+					game.Create();
+					curScene = &game;
+					pickMenu.Destroy();
+				});
 
 			pickMenu.Creator.CreateButton(sf::Vector2f(200, 200), "images/buttons/heart.png", [&]()
-										  {
-											  s_Choice = Field::Heart;
-											  game.Create();
-											  curScene = &game;
-											  pickMenu.Destroy();
-										  });
+				{
+					s_Choice = Field::Heart;
+					game.Create();
+					curScene = &game;
+					pickMenu.Destroy();
+				});
 
 			pickMenu.Creator.CreateButton(sf::Vector2f(200, 260), "images/buttons/back.png", [&]()
-										  {
-											  mainMenu.Create();
-											  curScene = &mainMenu;
-											  pickMenu.Destroy();
-										  });
+				{
+					mainMenu.Create();
+					curScene = &mainMenu;
+					pickMenu.Destroy();
+				});
 		};
 
 		mainMenu.OnCreate = [&]()
 		{
 			mainMenu.Creator.CreateButton(sf::Vector2f(200, 140), "images/buttons/play.png", [&]()
-										  {
-											  pickMenu.Create();
-											  curScene = &pickMenu;
-											  mainMenu.Destroy();
-										  });
+				{
+					pickMenu.Create();
+					curScene = &pickMenu;
+					mainMenu.Destroy();
+				});
 
 			mainMenu.Creator.CreateButton(sf::Vector2f(200, 200), "images/buttons/exit.png", [&]()
-										  {
-											  m_Window.Close();
-										  });
+				{
+					m_Window.Close();
+				});
 		};
 
 		mainMenu.Create();
@@ -207,7 +253,19 @@ namespace tac {
 		}
 	}
 
-	Field Application::Evaluate()
+	bool Application::NoEmptyFields()
+	{
+		uint8_t takenFields = 0;
+
+		for (uint8_t x = 0; x < 3; x++)
+			for (uint8_t y = 0; y < 3; y++)
+				if (m_Fields[x][y] != Field::Invalid && m_Fields[x][y] != Field::Empty)
+					takenFields++;
+
+		return takenFields == 9;
+	}
+
+	Field Application::Evaluate(Field fields[3][3])
 	{
 		// Top - down
 		for (uint64_t x = 0; x < 3; x++)
@@ -280,34 +338,58 @@ namespace tac {
 
 	std::pair<uint8_t, uint8_t> AI::GetMove(Application& app, Field fields[3][3])
 	{
+		uint8_t playerX = 10; // 10 for invalid
+		uint8_t playerY = 10;
+		uint8_t aiX = 10;
+		uint8_t aiY = 10;
+
 		for (uint64_t x = 0; x < 3; x++)
 			for (uint64_t y = 0; y < 3; y++)
 			{
 				Field old = fields[x][y];
-				
-				if (old == Field::Invalid)
+
+				if (old != Field::Empty)
 					continue;
 
-				fields[x][y] = Field::Cross;
-				Field result = app.Evaluate(fields);
-				fields[x][y] = Field::Heart;
-				Field result2 = app.Evaluate(fields);
-
+				fields[x][y] = s_Choice == Field::Cross ? Field::Heart : Field::Cross; // Opposite of the player
+				Field forItself = app.Evaluate(fields);
 				fields[x][y] = old;
 
-				if (result != Field::Invalid || result2 != Field::Invalid)
+				if (forItself != Field::Invalid)
 				{
-					return std::pair<uint8_t, uint8_t>(x, y);
+					aiX = x;
+					aiY = y;
+				}
+
+				fields[x][y] = s_Choice == Field::Cross ? Field::Cross : Field::Heart; // Pick of the player
+				Field againstPlayer = app.Evaluate(fields);
+				fields[x][y] = old;
+
+				if (againstPlayer != Field::Invalid)
+				{
+					playerX = x;
+					playerY = y;
 				}
 			}
 
+		if (aiX != 10)
+		{
+			return std::pair<uint8_t, uint8_t>(aiX, aiY);
+		}
+		if (playerX != 10)
+		{
+			return std::pair<uint8_t, uint8_t>(playerX, playerY);
+		}
+
 		std::default_random_engine generator;
-		std::uniform_int_distribution<int> dist(1, 3);
+		std::uniform_int_distribution<int> dist(0, 2);
 
 		uint64_t randomX = 0, randomY = 0;
-
-		randomX = dist(generator);
-		randomY = dist(generator);
+		do
+		{
+			randomX = dist(generator);
+			randomY = dist(generator);
+		} while (fields[randomX][randomY] != Field::Empty);
 
 		return std::pair<uint8_t, uint8_t>(randomX, randomY);
 	}

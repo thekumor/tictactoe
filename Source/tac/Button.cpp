@@ -37,6 +37,11 @@ namespace tac {
 		m_Visible = visible;
 	}
 
+	void Button::SetGhost(bool ghost)
+	{
+		m_Ghost = ghost;
+	}
+
 	sf::Vector2f Button::GetPosition()
 	{
 		return m_Position;
@@ -57,6 +62,11 @@ namespace tac {
 		return m_Visible;
 	}
 
+	bool Button::IsGhost()
+	{
+		return m_Ghost;
+	}
+
 	float Button::GetScale()
 	{
 		return m_Scale;
@@ -70,7 +80,7 @@ namespace tac {
 
 	void Button::Draw(sf::RenderTarget& target)
 	{
-		if (m_Visible)
+		if (m_Visible && !m_Ghost)
 			m_Sprite.Draw(target);
 	}
 

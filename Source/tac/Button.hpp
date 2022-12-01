@@ -17,6 +17,7 @@ namespace tac {
 		sf::Vector2u GetSize();
 		sf::Vector2f GetOBBs();
 		bool IsVisible();
+		bool IsGhost();
 		float GetScale();
 		void SetScale(float scale);
 		void Draw(sf::RenderTarget& target);
@@ -26,8 +27,10 @@ namespace tac {
 		void SetCallback(std::function<void()> func);
 		void Callback();
 		void SetVisible(bool visible);
+		void SetGhost(bool ghost);
 
 	private:
+		bool m_Ghost = false;
 		bool m_Visible = true;
 		float m_Scale = 1.0f;
 		Sprite m_Sprite;
